@@ -37,7 +37,7 @@ namespace InventarioTallerMecanico
 
                 switch (opcion)
                 {
-                    case 1:
+                    case 1: gestor.RegistrarRepuesto(); break;
                     case 2: 
                     case 3: 
                     case 4:
