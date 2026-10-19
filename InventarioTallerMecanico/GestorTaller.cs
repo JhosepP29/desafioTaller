@@ -47,14 +47,56 @@ namespace InventarioTallerMecanico
         // MÓDULO 2: ORDENAMIENTO (Listado)
         public void ListarInventario()
         {
-            
+            Console.WriteLine("\n--- INVENTARIO DE REPUESTOS ---");
+            if (inventario.Count == 0)
+            {
+                Console.WriteLine("No hay repuestos registrados en el almacén.");
+                return;
+            }
+            Console.WriteLine("\n{0,-8} {1,-25} {2,-15} {3,-12} {4,-8}", "Código", "Descripción", "Categoría", "Precio", "Stock");
+            Console.WriteLine(new string('-', 72));
+
+            // Criterio de ORDENAMIENTO
+            foreach (Repuesto r in inventario.OrderBy(rep => rep.Codigo))
+            {
+                string alertaStock = r.Stock < 3 ? "STOCK CRÍTICO" : "";
+                Console.WriteLine("{0,-8} {1,-25} {2,-15} {3,-12} {4,-8}{5}",
+                    r.Codigo, r.Nombre, r.Categoria, $"S/ {r.Precio:N2}", r.Stock, alertaStock);
+            }
+            Console.WriteLine(new string('-', 72));
+            Console.WriteLine($"Total de ítems registrados: {inventario.Count}");
             Console.ReadKey();
         }
 
         // MÓDULO 3: BÚSQUEDA
         public void BuscarRepuesto()
         {
-            
+            Console.WriteLine("\n--- BUSCAR REPUESTO ---");
+            if (inventario.Count == 0)
+            {
+                Console.WriteLine("El catálogo está vacío. Registre un repuesto primero.");
+                return;
+            }
+
+            Console.Write("Ingrese el código exacto de la pieza a buscar: ");
+            string codigoBusqueda = LeerCodigoConTeclado();
+
+            // Cumple con el criterio de BÚSQUEDA
+            Repuesto r = inventario.FirstOrDefault(x => x.Codigo == codigoBusqueda);
+
+            if (r != null)
+            {
+                Console.WriteLine("\nPRODUCTO ENCONTRADO:");
+                Console.WriteLine($"Código    : {r.Codigo}");
+                Console.WriteLine($"Nombre    : {r.Nombre}");
+                Console.WriteLine($"Categoría : {r.Categoria}");
+                Console.WriteLine($"Precio    : S/ {r.Precio:N2}");
+                Console.WriteLine($"Stock     : {r.Stock} unidades disponibles");
+            }
+            else
+            {
+                Console.WriteLine($"\nNo se encontró ningún repuesto con el código '{codigoBusqueda}'.");
+            }
             Console.ReadKey();
         }
         // =========================================================
